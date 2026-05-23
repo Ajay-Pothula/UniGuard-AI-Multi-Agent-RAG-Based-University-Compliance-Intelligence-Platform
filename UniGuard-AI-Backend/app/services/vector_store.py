@@ -49,8 +49,13 @@ def add_texts(texts: list[str], metadatas: list[dict], ids: list[str]):
         embedder = get_embedder()
         pc_index = get_pinecone_index()
         # Pinecone requires vectors to be pre-computed OR we use the model here
-        # For simplicity, we vectorize here using the same model
-        embeddings = embedder(texts)
+        # Batch the texts so ONNX doesn't spike RAM trying to embed 150 chunks at once
+        embeddings = []
+        batch_size = 15
+        for i in range(0, len(texts), batch_size):
+            batch_texts = texts[i:i+batch_size]
+            embeddings.extend(embedder(batch_texts))
+            
         vectors = []
         for i in range(len(texts)):
             # Gracefully handle numpy array casting from ONNX runtime to Pinecone native float list
@@ -60,7 +65,10 @@ def add_texts(texts: list[str], metadatas: list[dict], ids: list[str]):
                 "values": emb,
                 "metadata": {**metadatas[i], "text": texts[i]}
             })
-        pc_index.upsert(vectors=vectors)
+            
+        # Pinecone upsert limit is ~100 per API request
+        for i in range(0, len(vectors), 50):
+            pc_index.upsert(vectors=vectors[i:i+50])
     else:
         chroma_collection = get_chroma_collection()
         chroma_collection.add(documents=texts, metadatas=metadatas, ids=ids)
