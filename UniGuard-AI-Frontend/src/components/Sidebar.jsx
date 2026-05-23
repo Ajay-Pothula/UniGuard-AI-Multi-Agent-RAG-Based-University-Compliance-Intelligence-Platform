@@ -36,7 +36,7 @@ export default function Sidebar({ onUploadSuccess, userRole, setUserRole }) {
       if (onUploadSuccess) onUploadSuccess(data);
     } catch (err) {
       console.error(err);
-      alert("Failed to upload PDF. Is the backend running at localhost:8000?");
+      alert("Failed to upload PDF. If using a Free Cloud Server, it may be waking up from sleep mode (takes ~45s). Please wait exactly 1 minute and click upload again!");
     } finally {
       setIsUploading(false);
       e.target.value = null; // Reset input field so same file can be clicked again

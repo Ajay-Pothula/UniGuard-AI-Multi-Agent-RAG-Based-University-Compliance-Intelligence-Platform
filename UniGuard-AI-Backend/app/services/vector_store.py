@@ -46,9 +46,11 @@ def add_texts(texts: list[str], metadatas: list[dict], ids: list[str]):
         embeddings = embedding_function(texts)
         vectors = []
         for i in range(len(texts)):
+            # Gracefully handle numpy array casting from ONNX runtime to Pinecone native float list
+            emb = embeddings[i].tolist() if hasattr(embeddings[i], 'tolist') else embeddings[i]
             vectors.append({
                 "id": ids[i],
-                "values": embeddings[i],
+                "values": emb,
                 "metadata": {**metadatas[i], "text": texts[i]}
             })
         index.upsert(vectors=vectors)
@@ -95,9 +97,21 @@ def search_similar(query: str, n_results: int = 3) -> list[str]:
 def get_all_documents():
     """Gets all unique document filenames."""
     if USE_PINECONE:
-        # Note: Listing all metadata is limited in Pinecone free tier.
-        # We'll return an empty list or implement tracking later.
-        return ["(List not available in Pinecone mode yet)"]
+        try:
+            # Safely extract Pinecone metadata using a zero-vector sweep
+            results = index.query(
+                vector=[0.0] * 384,
+                top_k=300,
+                include_metadata=True
+            )
+            unique_sources = set()
+            for match in results.get("matches", []):
+                if "metadata" in match and "source" in match["metadata"]:
+                    unique_sources.add(match["metadata"]["source"])
+            return list(unique_sources)
+        except Exception as e:
+            print(f"Pinecone Sync Error: {e}")
+            return []
     else:
         results = collection.get()
         if not results or not results.get("metadatas"):
