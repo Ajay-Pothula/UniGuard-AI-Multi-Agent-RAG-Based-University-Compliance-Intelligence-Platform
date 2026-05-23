@@ -20,7 +20,7 @@ function App() {
       {/* Mobile Top Bar */}
       <div className="mobile-topbar hidden-desktop glass">
         <h2 className="brand-logo" style={{ marginBottom: 0, fontSize: '1.2rem' }}>
-          Uni<span className="text-accent">Guard</span> <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>AI</span>
+          Uni<span className="text-accent">Guard</span> <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>AI</span>
         </h2>
         <button className="menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
           {isMobileMenuOpen ? <X size={24} color="var(--text-primary)" /> : <Menu size={24} color="var(--text-primary)" />}

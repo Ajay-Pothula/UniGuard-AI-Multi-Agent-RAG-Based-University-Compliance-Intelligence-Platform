@@ -144,15 +144,16 @@ button {
 
   .sidebar {
     position: fixed;
-    top: 60px;
-    /* Topbar height */
+    top: 0px !important;
+    /* Slide over EVERYTHING */
     left: -100%;
     width: 280px !important;
-    height: calc(100vh - 60px) !important;
+    height: 100vh !important;
     border-right: 1px solid var(--border-color) !important;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--bg-secondary) !important;
-    z-index: 100;
+    z-index: 9999 !important;
+    /* Maximum priority stack */
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
