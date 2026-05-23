@@ -1,5 +1,3 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.12.0+cpu
 fastapi
 uvicorn
 pydantic
@@ -8,9 +6,8 @@ python-dotenv
 pymupdf
 langchain-text-splitters
 chromadb
-sentence-transformers
-python-multipart
-boto3
 pinecone
 sqlalchemy
 pyjwt
+python-multipart
+boto3

@@ -8,8 +8,8 @@ PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 PINECONE_ENV = os.getenv("PINECONE_ENVIRONMENT", "us-east-1")
 PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME", "documind-index")
 
-# Use the Sentence-Transformers embedding model (MiniLM-L6-v2)
-embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
+# Use Chroma's Default ONNX runtime (No PyTorch required, identically models all-MiniLM-L6-v2)
+embedding_function = embedding_functions.DefaultEmbeddingFunction()
 
 # Initialize Vector Storage
 if PINECONE_API_KEY:
