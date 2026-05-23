@@ -26,17 +26,20 @@ export default function Sidebar({ onUploadSuccess, userRole, setUserRole, isOpen
   }, []);
 
   const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (!files || files.length === 0) return;
 
     setIsUploading(true);
     try {
-      const data = await uploadPDF(file, adminToken);
+      // Sequence uploads mathematically to prevent OOM
+      for (const file of files) {
+        await uploadPDF(file, adminToken);
+      }
       await loadDocuments(); // Refresh the list from the database
-      if (onUploadSuccess) onUploadSuccess(data);
+      if (onUploadSuccess) onUploadSuccess();
     } catch (err) {
       console.error(err);
-      alert("Failed to upload PDF. If using a Free Cloud Server, it may be waking up from sleep mode (takes ~45s). Please wait exactly 1 minute and click upload again!");
+      alert("Failed to upload PDFs. If using a Free Cloud Server, it may be waking up from sleep mode (takes ~45s). Please wait exactly 1 minute and click upload again!");
     } finally {
       setIsUploading(false);
       e.target.value = null; // Reset input field so same file can be clicked again
@@ -95,6 +98,7 @@ export default function Sidebar({ onUploadSuccess, userRole, setUserRole, isOpen
             <input
               type="file"
               accept="application/pdf"
+              multiple
               ref={fileInputRef}
               style={{ display: 'none' }}
               onChange={handleFileChange}

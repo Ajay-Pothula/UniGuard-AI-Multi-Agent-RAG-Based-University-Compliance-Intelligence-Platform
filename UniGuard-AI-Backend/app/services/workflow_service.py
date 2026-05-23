@@ -61,6 +61,19 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
     workflow_steps = []
     
     # ---------------------------------------------------------
+    # AGENT 0: Universal Linguistics Translator
+    # ---------------------------------------------------------
+    workflow_steps.append("Agent 0 (Linguistics) -> Normalizing Query to English")
+    translator_system = (
+        "You are an expert NLP Linguistics Agent. "
+        "Analyze the user's input. If it is already in standard English, return it EXACTLY as is. "
+        "If it is in Romanized Telugu (e.g. 'nenu godava pettukunte em avtadi'), Hindi, or ANY other language, translate it faithfully to query-optimized English. "
+        "ONLY output the final English text, absolutely nothing else. No conversation."
+    )
+    time.sleep(1.0)
+    english_prompt = call_groq_llm(translator_system, prompt)
+
+    # ---------------------------------------------------------
     # AGENT 1: Query Classifier
     # ---------------------------------------------------------
     workflow_steps.append("Agent 1 (Query Classifier) -> Analyzing Intent")
@@ -69,7 +82,7 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
         'JSON Schema expected:\n{"category": "Attendance/Exam/Hostel/Fee/Discipline/General", "priority": "Low/Medium/High"}'
     )
     time.sleep(1.5)
-    intent_output = call_groq_llm(classifier_system, prompt, json_mode=True)
+    intent_output = call_groq_llm(classifier_system, english_prompt, json_mode=True)
     
     try:
         intent_data = json.loads(intent_output)
@@ -85,7 +98,7 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
     workflow_steps.append("Agent 2 (RAG Retrieval) -> Vector Search on ChromaDB")
     math_confidence = "0.0%"
     try:
-        raw_chunks, raw_metadatas, scores = search_similar_with_metadata(prompt, n_results=3)
+        raw_chunks, raw_metadatas, scores = search_similar_with_metadata(english_prompt, n_results=3)
         valid_chunks = []
         metadatas = []
         
@@ -122,7 +135,7 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
         'IMPORTANT CRITERIA: Only set "needs_review": true IF the user query is about breaking a severe rule, committing a strict violation (like banned items), or requesting a major penalty exception. If it is just a general informational question, set it to false.'
     )
     time.sleep(1.5) # Prevent rate limiting
-    analyst_output = call_groq_llm(analyst_system, prompt, json_mode=True)
+    analyst_output = call_groq_llm(analyst_system, english_prompt, json_mode=True)
     
     try:
         analysis_data = json.loads(analyst_output)
@@ -171,14 +184,14 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
         f"CONTEXT: {context_text}"
     )
     time.sleep(1.5) # Prevent rate limiting
-    final_response = call_groq_llm(summarizer_system, prompt, history=history)
+    final_response = call_groq_llm(summarizer_system, english_prompt, history=history)
 
     # ---------------------------------------------------------
     # Audit Logging (Database)
     # ---------------------------------------------------------
     insert_audit_log(
         role=user_role,
-        query=prompt,
+        query=prompt, # Keep original query for logs
         intent=intent,
         risk_level=analysis_data.get("risk_level", "Unknown"),
         confidence_score=analysis_data.get("confidence_score", "Unknown"),

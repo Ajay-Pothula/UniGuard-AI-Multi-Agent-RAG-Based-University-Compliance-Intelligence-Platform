@@ -110,10 +110,10 @@ export default function ChatArea({ isReady, userRole }) {
               </div>
 
               {msg.workflow_steps && msg.workflow_steps.length > 0 && (
-                <div className="citations-container" style={{ marginTop: '0.4rem', background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '4px' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.6)', marginBottom: '0.3rem' }}>🤖 Multi-Agent Pipeline:</div>
+                <div className="citations-container" style={{ marginTop: '0.4rem', background: 'rgba(17, 20, 57, 0.05)', padding: '0.5rem', borderRadius: '4px', border: '1px solid rgba(17, 20, 57, 0.1)' }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-primary)', marginBottom: '0.3rem', fontWeight: 600 }}>🤖 Multi-Agent Pipeline:</div>
                   {msg.workflow_steps.map((step, idx) => (
-                    <div key={idx} style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
+                    <div key={idx} style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.1rem' }}>
                       ✓ {step}
                     </div>
                   ))}
@@ -136,8 +136,8 @@ export default function ChatArea({ isReady, userRole }) {
                     🎯 Confidence: {msg.confidence_score}
                   </span>
                   {msg.needs_review && (
-                    <span className="citation-badge" style={{ background: 'rgba(255,100,100,0.15)', color: '#ff6b6b' }}>
-                      ⚠️ Manual Admin Review
+                    <span className="citation-badge" style={{ background: 'rgba(220,38,38,0.1)', color: '#dc2626', border: '1px solid rgba(220,38,38,0.2)' }}>
+                      ⚠️ Flagged & Logged for Admin Audit
                     </span>
                   )}
                 </div>
