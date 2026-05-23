@@ -55,7 +55,7 @@ export default function Sidebar({ onUploadSuccess, userRole, setUserRole, isOpen
   return (
     <>
       {isOpen && <div className="mobile-overlay" onClick={() => closeMobile(false)} style={{ position: 'fixed', top: 60, left: 0, width: '100vw', height: '100vh', background: 'rgba(0,0,0,0.5)', zIndex: 90 }} />}
-      <aside className={`sidebar glass ${isOpen ? 'mobile-open' : ''}`}>
+      <aside className={`sidebar glass ${isOpen ? 'mobile-open' : ''}`} onClick={(e) => e.stopPropagation()}>
         <div className="sidebar-header hidden-mobile">
           <h2 className="brand-logo">Uni<span className="text-accent">Guard</span> <span style={{ fontSize: '0.8rem', fontWeight: '500', marginLeft: '0.3rem', color: 'rgba(255,255,255,0.5)' }}>AI</span></h2>
         </div>
@@ -81,7 +81,7 @@ export default function Sidebar({ onUploadSuccess, userRole, setUserRole, isOpen
               }
             }}
             className="glass"
-            style={{ width: '100%', padding: '0.5rem', background: 'rgba(255,255,255,0.05)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px' }}
+            style={{ width: '100%', padding: '0.5rem', background: 'rgba(0,0,0,0.03)', color: 'var(--text-primary)', border: '1px solid rgba(0,0,0,0.1)', borderRadius: '4px', fontWeight: 500 }}
           >
             <option value="Student" style={{ color: '#000' }}>👨‍🎓 Student</option>
             <option value="Faculty" style={{ color: '#000' }}>👨‍🏫 Faculty</option>

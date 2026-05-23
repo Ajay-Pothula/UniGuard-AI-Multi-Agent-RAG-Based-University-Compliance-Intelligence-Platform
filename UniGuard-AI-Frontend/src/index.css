@@ -1,25 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-  --bg-color: #020617;
-  /* Slate 950 */
-  --bg-secondary: #0f172a;
-  /* Slate 900 */
-  --bg-tertiary: #1e293b;
-  /* Slate 800 */
-  --text-primary: #f8fafc;
-  /* Slate 50 */
-  --text-secondary: #94a3b8;
-  /* Slate 400 */
-  --accent-color: #6366f1;
-  /* Premium Indigo */
-  --accent-glow: rgba(99, 102, 241, 0.4);
-  --border-color: #334155;
-  /* Slate 700 */
+  --bg-color: #f8fafc;
+  /* Crisp Light Background */
+  --bg-secondary: #ffffff;
+  /* Pure White Panels */
+  --bg-tertiary: #f1f5f9;
+  /* Soft Wash */
+  --text-primary: #0f172a;
+  /* Deep Slate Ink */
+  --text-secondary: #475569;
+  /* Medium Gray */
+  --accent-color: #2563eb;
+  /* Professional Royal Blue */
+  --accent-glow: rgba(37, 99, 235, 0.15);
+  /* Soft Blue Glow */
+  --border-color: #e2e8f0;
+  /* Crisp Clean Lines */
   --error-color: #ef4444;
-  /* Red 500 */
+  /* Alert Red */
   --success-color: #10b981;
-  /* Emerald 500 */
+  /* Affirmative Emerald */
   --sidebar-width: 320px;
 }
 
@@ -47,10 +48,11 @@ button {
 
 /* Glassmorphism Classes */
 .glass {
-  background: rgba(19, 26, 41, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 /* Scrollbar styling */
