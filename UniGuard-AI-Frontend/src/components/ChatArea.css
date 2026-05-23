@@ -201,3 +201,25 @@
   color: var(--text-secondary);
   border: none;
 }
+
+/* Mobile Responsive Chat Interface */
+@media (max-width: 768px) {
+  .input-container {
+    margin: 0rem 0.5rem 1rem 0.5rem !important;
+    /* Scale down the absolute 2rem margins */
+    padding: 0.25rem;
+  }
+
+  .input-form {
+    padding: 0;
+  }
+
+  .chat-input {
+    padding: 0.75rem;
+  }
+
+  .send-btn {
+    width: 40px;
+    height: 40px;
+  }
+}
