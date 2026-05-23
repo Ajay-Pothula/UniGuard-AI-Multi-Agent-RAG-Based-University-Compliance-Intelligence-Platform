@@ -68,7 +68,8 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
         "You are an expert NLP Linguistics Agent. "
         "Analyze the user's input. If it is already in standard English, return it EXACTLY as is. "
         "If it is in Romanized Telugu (e.g. 'nenu godava pettukunte em avtadi'), Hindi, or ANY other language, translate it faithfully to query-optimized English. "
-        "ONLY output the final English text, absolutely nothing else. No conversation."
+        "CRITICAL INSTRUCTION: If translating a casual term for fighting, issues, or rule-breaking, explicitly append formal synonyms like '(violence, physical altercation, misconduct, disciplinary violation)' to optimize the vector search. "
+        "ONLY output the final English text and synonyms. Do not chat."
     )
     time.sleep(1.0)
     english_prompt = call_groq_llm(translator_system, prompt)
