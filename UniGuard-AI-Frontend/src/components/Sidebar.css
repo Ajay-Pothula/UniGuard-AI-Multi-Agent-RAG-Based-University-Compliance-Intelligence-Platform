@@ -38,13 +38,13 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: rgba(0, 229, 255, 0.02);
+  background: rgba(17, 20, 57, 0.03);
 }
 
 .upload-dropzone:hover {
   border-color: var(--accent-color);
-  background: rgba(0, 229, 255, 0.05);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+  background: rgba(17, 20, 57, 0.06);
+  box-shadow: 0 0 15px rgba(17, 20, 57, 0.1);
 }
 
 .icon {

@@ -60,10 +60,10 @@
 }
 
 .user-bubble {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #111439, #2a2e5d);
   color: #fff;
   border-top-right-radius: 4px;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 15px rgba(17, 20, 57, 0.2);
   font-weight: 500;
 }
 
@@ -78,15 +78,17 @@
 .citation-badge {
   font-size: 0.75rem;
   color: var(--text-primary);
-  background: rgba(99, 102, 241, 0.15);
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: rgba(17, 20, 57, 0.08);
+  /* Dark blue very light transparency */
+  border: 1px solid rgba(17, 20, 57, 0.15);
+  /* Slightly darker border */
   padding: 0.35rem 0.6rem;
   border-radius: 6px;
   letter-spacing: 0.3px;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* Markdown Styles inside the AI bubble */
@@ -115,16 +117,20 @@
 }
 
 .markdown-body code {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(17, 20, 57, 0.05);
+  /* Very light gray/blue */
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: monospace;
   font-size: 0.85em;
-  color: var(--accent-color);
+  color: #c2410c;
+  /* High contrast orange for code */
+  border: 1px solid rgba(17, 20, 57, 0.1);
 }
 
 .markdown-body pre {
-  background: rgba(0, 0, 0, 0.4);
+  background: #111439;
+  /* Pure Dark Blue for code blocks */
   padding: 1rem;
   border-radius: 6px;
   overflow-x: auto;
@@ -134,15 +140,20 @@
 .markdown-body pre code {
   background: transparent;
   padding: 0;
-  color: var(--text-primary);
+  border: none;
+  color: #f8f8f9;
+  /* White text on Dark Blue block */
 }
 
 .input-container {
   margin: 0 2rem 2rem 2rem;
   padding: 0.5rem;
   border-radius: 20px;
-  background: rgba(19, 26, 41, 0.85);
-  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.9);
+  /* Solid white */
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(17, 20, 57, 0.08);
+  /* Soft blue shadow */
 }
 
 .input-form {
@@ -167,7 +178,7 @@
 }
 
 .send-btn {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #111439, #2a2e5d);
   color: #fff;
   width: 45px;
   height: 45px;
