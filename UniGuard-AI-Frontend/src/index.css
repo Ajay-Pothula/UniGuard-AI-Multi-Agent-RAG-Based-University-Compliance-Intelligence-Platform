@@ -110,3 +110,30 @@ button {
   background-color: var(--accent-glow);
   color: #fff;
 }
+
+/* Mobile Responsive Overrides */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column !important;
+    overflow-y: auto;
+  }
+  .sidebar {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 50vh;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem !important;
+  }
+  .chat-area {
+    width: 100% !important;
+    height: 50vh !important;
+    flex-grow: 1;
+  }
+  .upload-dropzone {
+    height: 100px !important;
+  }
+  .message {
+    max-width: 95% !important;
+  }
+}

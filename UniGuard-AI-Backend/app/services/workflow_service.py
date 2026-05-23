@@ -89,8 +89,8 @@ def execute_policy_workflow(prompt: str, user_role: str, history: List[Any] = No
         valid_chunks = []
         metadatas = []
         
-        # Industry Standard: Dynamic Context Starvation
-        SIMILARITY_THRESHOLD = 0.60
+        # Industry Standard: Dynamic        # Starvation Threshold Parameter (Recalibrated for Pinecone Cosine vectors)
+        SIMILARITY_THRESHOLD = 0.35
         
         for i in range(len(raw_chunks)):
             if scores[i] >= SIMILARITY_THRESHOLD:
