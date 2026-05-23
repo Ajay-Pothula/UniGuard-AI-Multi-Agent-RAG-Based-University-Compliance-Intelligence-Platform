@@ -68,17 +68,22 @@ pip install fastapi uvicorn pydantic requests python-dotenv langchain chromadb P
 
 ### 3. Configure the Environment
 
-Create a `.env` file in the root folder and add your Groq API Key:
+Create a `.env` file in the root folder. You must provide a Groq key. To enable Cloud Serverless Permanent Storage (for 30+ PDFs), provide your Pinecone keys:
 
 ```env
+# Required: Blazing fast LLM Engine
 GROQ_API_KEY=gsk_your_actual_api_key_here
 GROQ_MODEL=llama-3.1-8b-instant
 GROQ_BASE_URL=https://api.groq.com/openai/v1/chat/completions
+
+# Optional: Cloud Permanent Storage (Handles 10,000+ PDFs with 0 latency)
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=us-east-1
+PINECONE_INDEX_NAME=documind-index
 ```
 
 > Get a free, blazing-fast inference API key at [console.groq.com](https://console.groq.com)
-
----
+> Get a free Vector Cloud database at [pinecone.io](https://www.pinecone.io/)
 
 ## 🏃 Running the Server
 
