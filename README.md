@@ -1,104 +1,100 @@
-# DocuMind AI: Full-Stack Enterprise RAG Platform
+<div align="center">
+  <h1>🛡️ UniGuard AI</h1>
+  <h3>An Enterprise Multi-Agent Policy & Compliance Assistant</h3>
+</div>
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![ChromaDB](https://img.shields.io/badge/ChromaDB-FF6B6B?style=for-the-badge)
-![Groq](https://img.shields.io/badge/Groq-000000?style=for-the-badge&logo=ai)
+<br />
 
-An end-to-end full-stack Retrieval-Augmented Generation (RAG) platform that enables users to upload, manage, and interactively query large PDF documents. This system acts as a stateful, highly intelligent document assistant.
-
-## Features
-- **Semantic Search Engine:** Ingests and chunks 100+ page PDF documents into highly optimized embeddings using HuggingFace sentence models.
-- **Stateful Vector Persistence:** Utilizes ChromaDB to retain document embeddings across active sessions. You don't have to re-process historical PDFs.
-- **Lightening-Fast AI:** Integrates Groq LLM API to deliver hallucination-free, highly accurate generative answers with sub-second retrieval latency.
-- **RESTful Architecture:** Features an asynchronous FastAPI backend for full lifecycle management of vectorized documents (POST/DELETE operations).
-- **Responsive UI:** A dynamic React-based frontend providing a seamless, real-time ChatGPT-like user experience.
+**UniGuard AI** is a deterministic, hallucination-resistant Retrieval-Augmented Generation (RAG) system built to enforce university and corporate compliance. It utilizes a highly structured **5-Agent sequential pipeline** running on LPUs (Groq Llama-3) to ingest policies, translate slang, mathematically verify rule-breaks via Pinecone vector similarity, and log high-risk queries into a SQLite audit database for human review.
 
 ---
 
-## 📂 Repository Structure
+## 🎯 1. Problem Statement
+**The Problem:** Large organizations (universities, corporations) have hundreds of pages of rigid compliance policies. Enforcement is inconsistent, and when an incident occurs, locating exact penalty parameters is tedious. Standard LLMs hallucinate rules when they don't know the answer.
+**The Solution:** A deterministic compliance oracle featuring mathematical context starvation. If a rule isn't in the database, the LLM is restricted from answering.
 
-This is a mono-repo containing both the React Frontend and the FastAPI Backend.
+## 👥 2. Defined Users (RBAC)
+1. **Students/Employees:** Query rules and receive empathetic, policy-driven explanations.
+2. **Faculty/Managers:** Receive strict Standard Operating Procedures (SOPs) on enforcing policy.
+3. **Administrators:** Have secure PIN-protected access to upload active policy PDFs and review automated SQLite Audit Logs of severe infractions.
 
-```text
-DocuMind/
-│
-├── frontend/           # React + Vite User Interface
-│   ├── src/
-│   ├── package.json
-│   └── ...
-│
-└── backend/            # Python FastAPI + LangChain Server
-    ├── app/
-    ├── requirements.txt
-    └── ...
+---
+
+## 🏗️ 3. Architecture Flowchart (Multi-Agent System)
+
+```mermaid
+graph TD
+    classDef user fill:#4ade80,stroke:#22c55e,color:black,stroke-width:2px;
+    classDef ui fill:#f8f8f9,stroke:#111439,color:#111439,stroke-width:2px;
+    classDef agent fill:#111439,stroke:#6366f1,color:white,stroke-width:2px;
+    classDef db fill:#f97316,stroke:#c2410c,color:white,stroke-width:2px;
+
+    U((👤 User)):::user -->|Query| UI[💻 React UI / Vite]:::ui
+    UI -->|HTTPS| API[⚡ FastAPI Backend]:::ui
+
+    subgraph The 5-Agent Pipeline
+        API --> A0[🤖 Agent 0: Linguistics & Translation]:::agent
+        A0 -->|English + Synonyms| A1[🧠 Agent 1: JSON Intent Classifier]:::agent
+        
+        A0 --> A2[🔍 Agent 2: Pinecone RAG Guards]:::agent
+        DB1[(🌲 Pinecone Vector DB)]:::db -.->|Similarity > 0.35| A2
+        
+        A1 --> A3
+        A2 --> A3[⚖️ Agent 3: Compliance & Risk JSON]:::agent
+        A3 -.->|needs_review: true| DB2[(🗄️ SQLite Audit Log)]:::db
+        
+        A3 --> A4[🗣️ Agent 4: Role-Based Summarizer]:::agent
+    end
+
+    A4 -->|Stream Response| UI
 ```
 
 ---
 
-## 🚀 Getting Started
-
-To run this application, you will need to start both the `backend` and `frontend` servers in two separate terminal windows.
-
-### 1. Build and Run the Backend (FastAPI)
-
-1. Open a terminal and navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Create and activate a Python virtual environment:
-   ```bash
-   # Windows
-   python -m venv venv
-   .\venv\Scripts\activate
-   
-   # Mac/Linux
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. **Environment Variables:** Create a `.env` file in the `backend` root directory and add your Groq API Key:
-   ```env
-   GROQ_API_KEY=your_api_key_here
-   ```
-5. Start the FastAPI server:
-   ```bash
-   uvicorn app.main:app --reload
-   ```
-   *The backend API will be live at `http://localhost:8000`. You can view interactive API documentation at `http://localhost:8000/docs`.*
-
-### 2. Build and Run the Frontend (React)
-
-1. Open a **second, new terminal window** and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install the necessary Node modules:
-   ```bash
-   npm install
-   ```
-3. Start the Vite development server:
-   ```bash
-   npm run dev
-   ```
-   *The stunning UI will be live at `http://localhost:5173/`.*
+## 🔬 4. The 5 Specialized Agents
+1. **Agent 0 (NLP Translator):** Intercepts raw input (including Romanized Hindi/Telugu slang like *"godava"*), translates it to English, and dynamically injects formal legal synonyms (e.g., "physical altercation", "violence") to maximize vector search collisions.
+2. **Agent 1 (Intent Classifier):** A strict JSON-enforced logic gate that securely categorizes the prompt (Hostel, Exam, Discipline) and assigns priority matrix values.
+3. **Agent 2 (RAG Retrieval):** Queries **Pinecone Serverless**. Features strict Cosine Similarity Thresholds (0.35). If chunks fall below the threshold, the context is "starved" to explicitly prohibit LLM hallucination.
+4. **Agent 3 (Risk Analyzer):** Evaluates the retrieved chunk against the user's intent. If severe rules (drugs, violence) are triggered, it outputs `needs_review: true`, which the FastApi backend intercepts to build an Audit Log.
+5. **Agent 4 (Persona Summarizer):** The only creative LLM in the pipeline. It reads the strict context array and shapes the final Markdown response depending on whether the user is an Admin, Faculty, or Student.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## ⚠️ 5. Known Limitations & Flaws
+*As requested for technical review evaluations:*
+1. **Pipeline Latency Bottleneck:** Because the 5 Agents run *sequentially*, the total network I/O accumulates. While Groq mitigates this with ~800 tokens/sec, standard OpenAI endpoints would cause massive UX buffering. **Future Fix:** Implementing LangGraph to form a Directed Acyclic Graph (DAG) to execute Agents 1, 2, and 3 in parallel rather than sequence.
+2. **RAM Exhaustion on the Free Tier:** Single-thread Python APIs (like Render's 512MB free tier) experience Out-Of-Memory (OOM) fatal crashes when parsing massive PDFs concurrently. **Current Fix:** We utilized a lazy-loaded singleton architecture and built a sequential Javascript loop in the React frontend to upload Multi-PDF batches one-by-one, releasing garbage-collector memory between packets.
+3. **Textract/Multimodal Limits:** PyMuPDF struggles with scanned documents or tables. **Future Scope:** Migrating the ingestion pipeline to AWS Textract OCR.
 
-- **Frontend:** React, Vite, CSS
-- **Backend API:** FastAPI, Uvicorn, Python
-- **AI & ML Pipeline:** LangChain, PyMuPDF (PDF ingestion), SentenceTransformers (Embeddings)
-- **Vector Database:** ChromaDB
-- **LLM Interface:** Groq API
+---
 
-## 📝 Usage
+## 🚀 6. Live Deployment & Setup Instructions
 
-1. Open the UI at `http://localhost:5173/`
-2. Use the left sidebar to **Upload** your target PDF document.
-3. Once the document chunks are vectorized and stored in ChromaDB, ask natural language questions in the main Chat Area to interrogate your document natively!
+### 🌍 Live URLs
+- **Frontend (Vercel):** https://uniguard-ai-frontend.vercel.app/
+- **Backend (Render):** https://uniguard-ai-multi-agent-rag-based.onrender.com
+
+### 🛠️ Local Setup
+1. **Clone Repo & Backend Setup:**
+   ```bash
+   git clone <repo>
+   cd UniGuard-AI-Backend
+   python -m venv venv
+   source venv/Scripts/activate # Windows
+   pip install -r requirements.txt
+   ```
+2. **Environment Variables (`.env` in backend):**
+   ```env
+   GROQ_API_KEY=your_key
+   PINECONE_API_KEY=your_key
+   ```
+3. **Run Backend:**
+   ```bash
+   uvicorn app.main:app --reload --port 8000
+   ```
+4. **Run Frontend (New Terminal):**
+   ```bash
+   cd UniGuard-AI-Frontend
+   npm install
+   npm run dev
+   ```
