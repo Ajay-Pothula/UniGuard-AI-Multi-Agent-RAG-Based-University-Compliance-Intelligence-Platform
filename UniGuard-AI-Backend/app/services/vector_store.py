@@ -121,9 +121,10 @@ def get_all_documents():
         pc_index = get_pinecone_index()
         try:
             # Safely extract Pinecone metadata using a zero-vector sweep
+            # Increase top_k to 10000 to scan the maximum chunk radius, supporting 200+ PDFs without clipping.
             results = pc_index.query(
                 vector=[0.0] * 384,
-                top_k=300,
+                top_k=10000,
                 include_metadata=True
             )
             unique_sources = set()
